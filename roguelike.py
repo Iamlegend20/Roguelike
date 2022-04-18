@@ -53,6 +53,9 @@ class Grid:
                 y = self.y_length - 1
                 z +=1
     
+    def spawn(self, thing, x_pos, y_pos, z_pos=0):
+        self.grid[x_pos][y_pos][z_pos].occupants.append(thing([2,2]))  #working on. delete 2d grid code.
+
     def update(self):
         os.system("cls")
         self.plot()                
@@ -64,36 +67,38 @@ class Tile:
         self.is_lookable = is_lookable
     def __repr__(self):
         if len(self.occupants) > 0:
-            return repr(self.occupants[0])
+            return repr(self.occupants[0]) #update for multiple occupants with id system
         if self.is_blocked:
             return "#"
         if not self.is_blocked:
             return "."
 
 class Character:
-    def __init__(self,x,y,z):
-        self.x = x
-        self.y = y
-        self.z = z
+    id = 1
+    def __init__(self, x_pos, y_pos, z_pos=0):
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.z_pos = z_pos
+        self.id = id
+        id += 1
+        #self.tile_location = grid.grid[x_pos][y_pos][z_pos].occupants[0]
     def __repr__(self):
         return "@"
-    def move(self,grid,direction):
-        x,y = self.location[0],self.
+    def move(self, grid, direction):
+        me = grid.grid[x_pos][y_pos][z_pos].occupants[0] #working on adding a way to identify where self is. id system
         if direction == 4:
-            pass
+            grid.grid[x_pos-1][y_pos][z_pos].occupants.append(me)
+            
 
 
 def main():
-    grid = Grid(5,5,2)
+    grid = Grid(5,5)
     grid.grid[2][2].occupants.append(Character([2,2]))
     grid.update()
     grid.grid[1][2].occupants.append(Character([1,2]))
     time.sleep(2)
     grid.grid[2][2].occupants.pop()
     grid.update()
-
-    #grid.grid[1][2].occupants.append(Character((1,2)))
-
 
     #running = True
     #while running:
