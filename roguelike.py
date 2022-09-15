@@ -123,7 +123,7 @@ def on_press(key):
 def get_input():
     global player_input
     global key_pressed
-    while key_pressed == False or is_valid_input(player_input) == False:
+    while key_pressed == False: #why cant validate be here?
         pass
     key_pressed = False
 
@@ -141,8 +141,9 @@ def main():
     
     while True:
         get_input()
-        player.move(grid, direction=player_input)
-        grid.update()
+        if is_valid_input(player_input):
+            player.move(grid, direction=player_input)
+            grid.update()
 
 if __name__ == '__main__':
     main()
