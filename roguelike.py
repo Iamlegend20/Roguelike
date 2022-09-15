@@ -107,11 +107,12 @@ class Character:
                 current_tile.remove(self)
                 break   
 
-def validate_input(player_input):
-    global key_pressed
+def is_valid_input(player_input):
     accepted_input = ("<97>","<98>","<99>","<100>","<101>","<102>","<103>","<104>","<105>")
-    if player_input not in accepted_input:
-        return False
+    if player_input in accepted_input:
+        return True
+
+
 
 def on_press(key):
     global player_input
@@ -119,24 +120,29 @@ def on_press(key):
     player_input = str(key)
     key_pressed = True
 
+def get_input():
+    global player_input
+    global key_pressed
+    while key_pressed == False or is_valid_input(player_input) == False:
+        pass
+    key_pressed = False
+
 player_input = None
 key_pressed = False
 def main():
     global player_input
     global key_pressed
-    listener = keyboard.Listener(on_press=on_press)
-    listener.start()
     grid = Grid(60,20,1)
     player = Character(2,2,0)
     player.spawn(grid)
     grid.update()
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()
     
     while True:
-        while key_pressed:
-            if validate_input(player_input) == False : break
-            player.move(grid, direction=player_input)
-            grid.update()
-            key_pressed = False
+        get_input()
+        player.move(grid, direction=player_input)
+        grid.update()
 
 if __name__ == '__main__':
     main()
